@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"crypto/md5"
+	"encoding/hex"
 )
 
 func main() {
@@ -11,12 +13,19 @@ func main() {
 }
 
 func getContent(url string) string {
-	response, e := http.Get(url)
-	defer response.Body.Close()
+	cacheDirectory := "var/cache";
+	fileName := cacheDirectory + "/" + getMD5Hash(url)
+	fileContent, e := ioutil.ReadFile(fileName);
 
+	if e == nil {
+		return string(fileContent)
+	}
+
+	response, e := http.Get(url)
 	if e != nil {
 		panic(e)
 	}
+	defer response.Body.Close()
 
 	content, e := ioutil.ReadAll(response.Body)
 
@@ -24,5 +33,14 @@ func getContent(url string) string {
 		panic(e)
 	}
 
-	return string(content)
+	contentString := string(content)
+
+	ioutil.WriteFile(fileName, content, 0777)
+
+	return contentString
+}
+
+func getMD5Hash(text string) string {
+	hash := md5.Sum([]byte(text))
+	return hex.EncodeToString(hash[:])
 }
