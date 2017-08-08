@@ -7,7 +7,11 @@ import (
 )
 
 func main() {
-	response, e := http.Get("https://github.com")
+	fmt.Println(getContent("https://github.com"))
+}
+
+func getContent(url string) string {
+	response, e := http.Get(url)
 	defer response.Body.Close()
 
 	if e != nil {
@@ -20,5 +24,5 @@ func main() {
 		panic(e)
 	}
 
-	fmt.Println(string(content))
+	return string(content)
 }
