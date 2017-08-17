@@ -1,23 +1,33 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"net/http"
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
+	"github.com/PuerkitoBio/goquery"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
 var page = "http://www.allitebooks.com/"
 
 func main() {
-	fmt.Println(getContent(page))
+	content := getContent(page)
+
+	document, e := goquery.NewDocumentFromReader(strings.NewReader(content))
+
+	if e != nil {
+		panic(e)
+	}
+
+	fmt.Print(document)
 }
 
 func getContent(url string) string {
-	cacheDirectory := "var/cache";
+	cacheDirectory := "var/cache"
 	fileName := cacheDirectory + "/" + getMD5Hash(url)
-	fileContent, e := ioutil.ReadFile(fileName);
+	fileContent, e := ioutil.ReadFile(fileName)
 
 	if e == nil {
 		return string(fileContent)
