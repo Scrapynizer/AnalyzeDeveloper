@@ -21,16 +21,16 @@ func main() {
 		panic(e)
 	}
 
-	books := document.Find("article")
+	bookListSelection := document.Find("article")
 
-	books.Each(func(i int, s *goquery.Selection) {
-		headerSelection := s.Find("header")
+	bookListSelection.Each(func(i int, bookSelection *goquery.Selection) {
+		headerSelection := bookSelection.Find("header")
 		titleSelection := headerSelection.Find("h2 a")
 
-		authorSelection := headerSelection.Find("h5 a")
+		authorListSelection := headerSelection.Find("h5 a")
 
-		authorSelection.Each(func(i int, selection *goquery.Selection) {
-			fmt.Println(selection.Text())
+		authorListSelection.Each(func(i int, authorSelection *goquery.Selection) {
+			fmt.Println(authorSelection.Text())
 		})
 
 		fmt.Println(titleSelection.Text())
