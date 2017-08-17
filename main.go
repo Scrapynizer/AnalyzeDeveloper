@@ -8,8 +8,10 @@ import (
 	"encoding/hex"
 )
 
+var page = "http://www.allitebooks.com/"
+
 func main() {
-	fmt.Println(getContent("https://github.com"))
+	fmt.Println(getContent(page))
 }
 
 func getContent(url string) string {
