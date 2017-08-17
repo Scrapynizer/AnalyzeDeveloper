@@ -21,6 +21,7 @@ type Book struct {
 	Title       Link
 	Authors     []Link
 	Description string
+	Image       string
 }
 
 func main() {
@@ -57,10 +58,13 @@ func main() {
 		}
 		descriptionSelection := bookSelection.Find("p")
 		description := descriptionSelection.Text()
+		imageSelection := bookSelection.Find("img")
+		image, _ := imageSelection.Attr("src")
 		books = append(books, Book{
 			titleLink,
 			authors,
 			description,
+			image,
 		})
 	})
 
