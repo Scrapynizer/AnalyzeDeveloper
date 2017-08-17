@@ -24,10 +24,16 @@ func main() {
 	books := document.Find("article")
 
 	books.Each(func(i int, s *goquery.Selection) {
-		header := s.Find("header")
-		name := header.Find("h5 a").Text()
+		headerSelection := s.Find("header")
+		titleSelection := headerSelection.Find("h2 a")
 
-		fmt.Println(name)
+		authorSelection := headerSelection.Find("h5 a")
+
+		authorSelection.Each(func(i int, selection *goquery.Selection) {
+			fmt.Println(selection.Text())
+		})
+
+		fmt.Println(titleSelection.Text())
 	})
 }
 
