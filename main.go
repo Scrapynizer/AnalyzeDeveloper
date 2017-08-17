@@ -18,8 +18,9 @@ type Link struct {
 }
 
 type Book struct {
-	Title   Link
-	Authors []Link
+	Title       Link
+	Authors     []Link
+	Description string
 }
 
 func main() {
@@ -54,9 +55,12 @@ func main() {
 			titleSelection.Text(),
 			titleUrl,
 		}
+		descriptionSelection := bookSelection.Find("p")
+		description := descriptionSelection.Text()
 		books = append(books, Book{
 			titleLink,
 			authors,
+			description,
 		})
 	})
 
