@@ -12,6 +12,16 @@ import (
 
 var page = "http://www.allitebooks.com/"
 
+type Link struct {
+	Name string
+	Url  string
+}
+
+type Book struct {
+	Title   Link
+	Authors []Link
+}
+
 func main() {
 	content := getContent(page)
 
@@ -21,20 +31,36 @@ func main() {
 		panic(e)
 	}
 
+	books := []Book{}
+
 	bookListSelection := document.Find("article")
 
 	bookListSelection.Each(func(i int, bookSelection *goquery.Selection) {
 		headerSelection := bookSelection.Find("header")
 		titleSelection := headerSelection.Find("h2 a")
 
+		authors := []Link{}
 		authorListSelection := headerSelection.Find("h5 a")
-
 		authorListSelection.Each(func(i int, authorSelection *goquery.Selection) {
-			fmt.Println(authorSelection.Text())
+			authorUrl, _ := authorSelection.Attr("href")
+			authors = append(authors, Link{
+				authorSelection.Text(),
+				authorUrl,
+			})
 		})
 
-		fmt.Println(titleSelection.Text())
+		titleUrl, _ := titleSelection.Attr("href")
+		titleLink := Link{
+			titleSelection.Text(),
+			titleUrl,
+		}
+		books = append(books, Book{
+			titleLink,
+			authors,
+		})
 	})
+
+	fmt.Print(books)
 }
 
 func getContent(url string) string {
