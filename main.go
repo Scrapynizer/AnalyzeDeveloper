@@ -21,7 +21,14 @@ func main() {
 		panic(e)
 	}
 
-	fmt.Print(document)
+	books := document.Find("article")
+
+	books.Each(func(i int, s *goquery.Selection) {
+		header := s.Find("header")
+		name := header.Find("h5 a").Text()
+
+		fmt.Println(name)
+	})
 }
 
 func getContent(url string) string {
